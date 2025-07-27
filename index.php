@@ -1,16 +1,25 @@
+<?php require 'header.php'; ?>
+<?php require 'bdd.php'; ?>
+
 <?php
-    require 'header.php';
-    require 'oeuvres.php';
+$db = connexion(); // Connexion à la BDD
+
+// Récupération des œuvres depuis MySQL
+$stmt = $db->query("SELECT * FROM oeuvres");
+$oeuvres = $stmt->fetchAll();
 ?>
-<div id="liste-oeuvres">
-    <?php foreach($oeuvres as $oeuvre): ?>
-        <article class="oeuvre">
-            <a href="oeuvre.php?id=<?= $oeuvre['id'] ?>">
-                <img src="<?= $oeuvre['image'] ?>" alt="<?= $oeuvre['titre'] ?>">
-                <h2><?= $oeuvre['titre'] ?></h2>
-                <p class="description"><?= $oeuvre['artiste'] ?></p>
+
+<main>
+    <div id="liste-oeuvres">
+        <?php foreach ($oeuvres as $oeuvre) : ?>
+            <a href="oeuvre.php?id=<?= htmlspecialchars($oeuvre['id']) ?>" class="oeuvre">
+                <img src="<?= htmlspecialchars($oeuvre['image']) ?>" alt="<?= htmlspecialchars($oeuvre['titre']) ?>">
+                <h2><?= htmlspecialchars($oeuvre['titre']) ?></h2>
+                <p><?= htmlspecialchars($oeuvre['artiste']) ?></p>
             </a>
-        </article>
-    <?php endforeach; ?>
-</div>
+        <?php endforeach; ?>
+    </div>
+</main>
+
 <?php require 'footer.php'; ?>
+
